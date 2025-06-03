@@ -1,0 +1,73 @@
+include:
+  - infra/snowplow/docker-compose.yaml
+  - infra/localstack/docker-compose.yaml
+  - infra/kafka/docker-compose.yaml
+  - infra/redis/docker-compose.yaml
+  - infra/monitoring/docker-compose.yaml
+
+  - apps/ecommerce.docker-compose.yaml
+
+services:
+  flink-jm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: snowplow-live-shopper-flink:${TAG:-latest}
+    container_name: s-flink-jm
+    profiles: ["flink"]
+    depends_on:
+      kafka:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    ports:
+      - "8081:8081"
+      - "9249:9249"
+    command: >
+      standalone-job
+      --job-classname com.evoura.snowplow.SnowplowAnalyticsPipeline
+      --propertiesFile /config/flink-docker.properties
+      --windowPropertiesFile /config/window.properties
+    volumes:
+      - ./.config/flink-docker.properties:/config/flink-docker.properties
+      - ./.config/window.properties:/config/window.properties
+      - ./apps/flink/src/main/resources/logback.xml:/config/logback.xml
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: flink-jm
+        metrics.reporters: prom
+        metrics.reporter.prom.factory.class: org.apache.flink.metrics.prometheus.PrometheusReporterFactory
+        metrics.reporter.prom.port: 9249
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "localhost:8081"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  flink-tm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: snowplow-live-shopper-flink:${TAG:-latest}
+    container_name: s-flink-tm
+    hostname: flink-tm
+    profiles: ["flink"]
+    depends_on:
+      - flink-jm
+    volumes:
+      - ./.config/flink-docker.properties:/config/flink-docker.properties
+      - ./.config/window.properties:/config/window.properties
+      - ./apps/flink/src/main/resources/logback.xml:/config/logback.xml
+    ports:
+      - "9250:9250"
+    command: taskmanager
+    scale: 1 # Start with one task manager
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: flink-jm
+        metrics.reporters: prom
+        metrics.reporter.prom.factory.class: org.apache.flink.metrics.prometheus.PrometheusReporterFactory
+        metrics.reporter.prom.port: 9250

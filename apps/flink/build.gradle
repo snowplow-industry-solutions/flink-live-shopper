@@ -1,0 +1,141 @@
+plugins {
+    id 'java'
+    id 'application'
+    // shadow plugin to produce fat JARs
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+
+    id 'com.diffplug.spotless' version '6.17.0'
+}
+
+ext {
+    javaVersion = JavaVersion.VERSION_21
+    flinkVersion = '2.0.0'
+    kafkaConnectorVersion = '4.0.0-2.0'
+
+    junitVersion = '5.9.2'
+    testContainers = '1.20.3'
+}
+
+// artifact properties
+group = 'com.evoura.snowplow'
+version = '0.1-SNAPSHOT'
+mainClassName = 'com.evoura.snowplow.SnowplowAnalyticsPipeline'
+description = """Snowplow Live Shopper Accelerator"""
+
+sourceCompatibility = javaVersion
+targetCompatibility = javaVersion
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+applicationDefaultJvmArgs = ["-Dlog4j.configurationFile=log4j2.properties"]
+
+// declare where to find the dependencies of your project
+repositories {
+    mavenCentral()
+    maven {
+        url "https://repository.apache.org/content/repositories/snapshots"
+        mavenContent {
+            snapshotsOnly()
+        }
+    }
+}
+
+// NOTE: We cannot use "compileOnly" or "shadow" configurations since then we could not run code
+// in the IDE or with "gradle run". We also cannot exclude transitive dependencies from the
+// shadowJar yet (see https://github.com/johnrengelman/shadow/issues/159).
+// -> Explicitly define the // libraries we want to be included in the "flinkShadowJar" configuration!
+configurations {
+    flinkShadowJar // dependencies which go into the shadowJar
+
+    // always exclude these (also from transitive dependencies) since they are provided by Flink
+    flinkShadowJar.exclude group: 'org.apache.flink', module: 'force-shading'
+    flinkShadowJar.exclude group: 'com.google.code.findbugs', module: 'jsr305'
+    flinkShadowJar.exclude group: 'org.slf4j'
+    flinkShadowJar.exclude group: 'org.apache.logging.log4j'
+}
+
+// declare the dependencies for your production and test code
+dependencies {
+    // --------------------------------------------------------------
+    // Compile-time dependencies that should NOT be part of the
+    // shadow jar and are provided in the lib folder of Flink
+    // --------------------------------------------------------------
+    implementation "org.apache.flink:flink-streaming-java:${flinkVersion}"
+    implementation "org.apache.flink:flink-clients:${flinkVersion}"
+
+    // --------------------------------------------------------------
+    // Dependencies that should be part of the shadow jar, e.g.
+    // connectors. These must be in the flinkShadowJar configuration!
+    // --------------------------------------------------------------
+    flinkShadowJar "org.apache.flink:flink-json:${flinkVersion}"
+
+    flinkShadowJar "org.apache.flink:flink-connector-base:${flinkVersion}"
+    flinkShadowJar "org.apache.flink:flink-connector-kafka:${kafkaConnectorVersion}"
+
+    flinkShadowJar "com.fasterxml.jackson.core:jackson-databind:2.14.3"
+
+    // Proper logging
+    implementation 'org.apache.logging.log4j:log4j-api:2.17.1'
+    implementation 'org.slf4j:slf4j-api:1.7.36'
+    implementation 'ch.qos.logback:logback-classic:1.2.13'
+    implementation "ch.qos.logback:logback-core:1.2.13"
+    implementation "ch.qos.logback:logback-classic:1.2.13"
+    
+    flinkShadowJar "nl.basjes.parse.useragent:yauaa:7.30.0"
+    flinkShadowJar "io.lettuce:lettuce-core:6.5.5.RELEASE"
+    runtimeOnly "ch.qos.logback:logback-classic:1.5.7" because "See logs when running the job locally"
+
+    // Add test dependencies here.
+    // testCompile "junit:junit:4.12"
+    testImplementation platform("org.junit:junit-bom:${junitVersion}")
+    testImplementation platform("org.testcontainers:testcontainers-bom:${testContainers}")
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "org.testcontainers:testcontainers"
+    testImplementation "org.testcontainers:junit-jupiter"
+    testImplementation "org.testcontainers:kafka"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+    testImplementation 'org.assertj:assertj-core:3.25.1'
+    testImplementation 'org.mockito:mockito-core:5.12.0'
+
+    testImplementation "org.apache.flink:flink-runtime-web:${flinkVersion}"
+}
+
+// make compileOnly dependencies available for tests:
+sourceSets {
+    main.compileClasspath += configurations.flinkShadowJar
+    main.runtimeClasspath += configurations.flinkShadowJar
+
+    test.compileClasspath += configurations.flinkShadowJar
+    test.runtimeClasspath += configurations.flinkShadowJar
+
+    javadoc.classpath += configurations.flinkShadowJar
+}
+
+run.classpath = sourceSets.main.runtimeClasspath
+
+jar {
+    manifest {
+        attributes 'Built-By': System.getProperty('user.name'),
+                'Build-Jdk': System.getProperty('java.version')
+    }
+}
+
+shadowJar {
+    configurations = [project.configurations.flinkShadowJar]
+    mergeServiceFiles()
+    zip64 = true
+}
+
+spotless {
+    java {
+        googleJavaFormat()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

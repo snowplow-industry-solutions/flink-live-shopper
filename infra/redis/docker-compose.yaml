@@ -1,0 +1,15 @@
+services:
+  redis:
+    image: redis:7.4.2
+    container_name: s-redis
+    ports:
+      - "6379:6379"
+
+  redis-gui:
+    image: redis/redisinsight:2.68
+    container_name: s-redis-insight
+    environment:
+      RI_REDIS_HOST: redis
+      RI_REDIS_PORT: 6379
+    ports:
+      - "5540:5540"

@@ -1,0 +1,31 @@
+<!-- Local usage only, has no effect on staging/production. -->
+<configuration>
+
+    <property name="logfile" value="${logfile:-logs/flink-default.log}"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %highlight(%-5level) [%thread] [%cyan(%logger{36}:%line)] - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+<!--        <file>logs/flink.log</file>-->
+        <file>${logfile}</file>
+        <append>false</append>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level [%thread] %logger:%line - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <logger name="org.apache.flink" level="warn"/>
+    <logger name="org.apache.flink.runtime.security.token" level="error"/>
+    <logger name="org.apache.kafka" level="error"/>
+    <logger name="com.evoura" level="info"/>
+    <!-- <logger name="com.evoura.x" level="debug" />-->
+
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

@@ -1,0 +1,29 @@
+{
+    "schema": "iglu:com.snowplowanalytics.iglu/resolver-config/jsonschema/1-0-3",
+    "data": {
+      "cacheSize": 0,
+      "repositories": [
+        {
+          "name": "Iglu Central",
+          "priority": 0,
+          "vendorPrefixes": [ "com.snowplowanalytics" ],
+          "connection": {
+            "http": {
+              "uri": "http://iglucentral.com"
+            }
+          }
+        },
+        {
+            "name": "Local Iglu",
+            "priority": 10,
+            "vendorPrefixes": [],
+            "connection": {
+                "http": {
+                    "uri": "http://host.docker.internal:8081/api",
+                    "apikey": "deadbeef-dead-beef-dead-beefdeadbeef"
+                }
+            }
+        }
+      ]
+    }
+  }

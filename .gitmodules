@@ -1,0 +1,3 @@
+[submodule "apps/ecommerce"]
+	path = apps/ecommerce
+	url = https://github.com/snowplow-industry-solutions/ecommerce-nextjs-example-store.git

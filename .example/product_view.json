@@ -1,0 +1,111 @@
+{
+  "id": "e9081481-82fb-4e7f-9771-82ce58dc22a3",
+  "type": "product_view",
+  "timestamp": "2025-04-04T14:33:39.968Z",
+  "payload": {
+    "product": {
+      "name": "SP Flex Runner 2",
+      "brand": "Snowplow",
+      "category": "Kid shoes",
+      "variant": "Black-White",
+      "creative_id": "/shoe5.webp",
+      "size": "28",
+      "currency": "USD",
+      "id": "5",
+      "price": 42.99
+    },
+    "specification": {
+      "id": "035b0ebc-0622-4a86-9941-97c48f2ab302",
+      "name": "Track product view",
+      "data_product_id": "5dd51653-7605-4a3e-9208-2a9ba20b39aa",
+      "data_product_name": "E-commerce Web - Snowplow Shoes"
+    }
+  },
+  "enrich": {
+    "client": {
+      "useragent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+      "browser": {
+        "documentSize": "2056x929",
+        "resolution": "2056x1329",
+        "colorDepth": 30,
+        "devicePixelRatio": 2,
+        "webdriver": false,
+        "hardwareConcurrency": 14,
+        "tabId": "041a1aef-c921-4aa1-a99c-77a3bc175862",
+        "viewport": "2056x631",
+        "cookiesEnabled": true,
+        "online": true,
+        "browserLanguage": "en-US",
+        "documentLanguage": "en",
+        "deviceMemory": 8
+      },
+      "device": {
+        "created_tstamp": "2025-04-04T14:33:39.96Z",
+        "sent_tstamp": "2025-04-04T14:33:39.98Z",
+        "screen_width": 2056,
+        "screen_height": 1329,
+        "os_timezone": "Europe/Amsterdam"
+      },
+      "page": {
+        "page_url": "http://localhost:3000/product/5",
+        "page_referrer": "http://localhost:3000/search?q=run"
+      }
+    },
+    "performance": {
+      "domComplete": 439.59999999403954,
+      "loadEventEnd": 439.59999999403954,
+      "responseStart": 29.299999997019768,
+      "responseEnd": 29.700000002980232,
+      "unloadEventStart": 31.5,
+      "domInteractive": 50.20000000298023,
+      "unloadEventEnd": 31.5,
+      "connectStart": 8.399999991059303,
+      "requestStart": 8.899999991059303,
+      "encodedBodySize": 1834,
+      "decodedBodySize": 4973,
+      "loadEventStart": 439.59999999403954,
+      "duration": 439.59999999403954,
+      "fetchStart": 7,
+      "domainLookupEnd": 8.399999991059303,
+      "connectEnd": 8.899999991059303,
+      "domContentLoadedEventStart": 426.70000000298023,
+      "domContentLoadedEventEnd": 426.70000000298023,
+      "type": "navigate",
+      "entryType": "navigation",
+      "nextHopProtocol": "http/1.1",
+      "domainLookupStart": 8.399999991059303,
+      "transferSize": 2134
+    },
+    "user": {
+      "user_id": "trent@snowplowanalytics.com",
+      "domain_userid": "67430c52-68fb-4277-baeb-b6033403094a",
+      "network_userid": "de30aa02-de2e-4cf0-bd9d-3bbd89d47e0c",
+      "ip_address": "192.168.65.1"
+    },
+    "marketing": null,
+    "platform": "web"
+  },
+  "session": {
+    "firstEventId": "b1a33958-58c3-4406-8940-e8b81764ba21",
+    "firstEventTimestamp": "2025-04-04T13:15:48.132Z",
+    "userId": "67430c52-68fb-4277-baeb-b6033403094a",
+    "sessionId": "116cf32d-74ac-4d54-aae1-65277a0ea749",
+    "eventIndex": 365,
+    "sessionIndex": 18,
+    "previousSessionId": "fa5157db-dd94-4a21-b848-4df9572c8f62",
+    "storageMechanism": "COOKIE_1"
+  },
+  "metadata": {
+    "event_version": "1-0-2",
+    "event_format": "jsonschema",
+    "event_fingerprint": "5edad9bf897f107f2f221647cd29b8a0057cf9dd",
+    "event_vendor": "com.snowplowanalytics.snowplow.ecommerce",
+    "app_id": "next-js-ecommerce-example",
+    "etl_tstamp": "2025-04-04T14:33:47.384Z",
+    "collector_tstamp": "2025-04-04T14:33:39.988Z",
+    "v_tracker": "js-4.3.1",
+    "v_collector": "ssc-3.2.0-kinesissink",
+    "v_etl": "snowplow-enrich-kinesis-5.0.0",
+    "name_tracker": "sp"
+  }
+}

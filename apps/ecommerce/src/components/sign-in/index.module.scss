@@ -1,0 +1,51 @@
+.signInPage {
+    width: 100%;
+    max-width: 275px;
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 60px;
+    font-family: var(--font-inter), Helvetica, Arial, sans-serif;
+    margin-left: auto;
+    margin-right: auto;
+
+    input {
+        background-color: #f5f5f5;
+        padding: 8px 36px;
+        cursor: text;
+        width: 100%;
+        height: 40px;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+.signInButton {
+    width: 30%;
+    padding: 4px;
+    border-radius: 30px;
+    border: 1.5px solid transparent;
+    justify-content: center;
+    align-items: center;
+    background: #111;
+    color: #FFF;
+    white-space: nowrap;
+    text-align: center;
+    text-decoration: none;
+    display: inline-flex;
+    margin: 0;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.signInHeader {
+    text-align: left;
+}

@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'flink-jobmanager'
+    static_configs:
+      - targets: ['flink-jm:9249']
+        labels:
+          service: 'flink-jobmanager'
+
+  - job_name: 'flink-taskmanager'
+    static_configs:
+      - targets: ['flink-tm:9250']
+        labels:
+          service: 'flink-taskmanager'
