@@ -3,6 +3,8 @@
 # Flink Live Shopper Features with Redis
 
 [![License][license-image]][license]
+[![Docs][guide-image]][guide-intro]
+[![Snowplow Developer Hub][devhub-image]][devhub-deeplink]
 
 A [Snowplow solution accelerator][solution-accelerators] showcasing real-time user behavior analytics using Snowplow event tracking, processed by [Apache Flink][flink], and stored in Redis for potential downstream use or visualization.
 
@@ -121,3 +123,7 @@ limitations under the License.
 [license-image]: https://img.shields.io/github/license/snowplow/snowplow-android-tracker
 
 [guide-intro]: https://docs.snowplow.io/tutorials/flink-live-shopper-features/introduction/
+[guide-image]: https://img.shields.io/badge/📚-Documentation-blue
+
+[devhub-deeplink]: https://snowplow.io/solution-accelerators/real-time-shopper-features-using-apache-flink
+[devhub-image]: https://img.shields.io/badge/Snowplow-Developer%20Hub-6638f0
